@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<definitions name='SoapResponder'
+             targetNamespace='http://kappa.cs.karelia.ru/~hristofo/services/soap/sum.wsdl'
+             xmlns:tns='http://kappa.cs.karelia.ru/~hristofo/services/soap/sum.wsdl'
+             xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+             xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+             xmlns='http://schemas.xmlsoap.org/wsdl/'>
+
+    <message name='sumRequest'>
+        <part name='a' type='xsd:double'/>
+        <part name='b' type='xsd:double'/>
+    </message>
+    <message name='sumResponse'>
+        <part name='result' type='xsd:double'/>
+    </message>
+
+    <message name='squareRequest'>
+        <part name='num' type='xsd:double'/>
+    </message>
+    <message name='squareResponse'>
+        <part name='result' type='xsd:double'/>
+    </message>
+
+    <portType name='SoapResponderPortType'>
+        <operation name='square'>
+            <input message='tns:squareRequest'/>
+            <output message='tns:squareResponse'/>
+        </operation>
+        <operation name='sum'>
+            <input message='tns:sumRequest'/>
+            <output message='tns:sumResponse'/>
+        </operation>
+    </portType>
+    <binding name='SoapResponderBinding' type='tns:SoapResponderPortType'>
+        <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
+        <operation name='square'>
+            <soap:operation soapAction='square'/>
+            <input>
+                <soap:body use='encoded' namespace='urn:myInputNamespace'
+                           encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+            </input>
+            <output>
+                <soap:body use='encoded' namespace='urn:myOutputNamespace'
+                           encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+            </output>
+        </operation>
+        <operation name='sum'>
+            <soap:operation soapAction='sum'/>
+            <input>
+                <soap:body use='encoded' namespace='urn:myInputNamespace'
+                           encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+            </input>
+            <output>
+                <soap:body use='encoded' namespace='urn:myOutputNamespace'
+                           encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+            </output>
+        </operation>
+    </binding>
+    <service name='SoapResponder'>
+        <documentation>Some math functions</documentation>
+        <port name='SoapResponderPortType' binding='tns:SoapResponderBinding'>
+            <soap:address location='http://kappa.cs.karelia.ru/~hristofo/services/soap/server.php'/>
+        </port>
+    </service>
+</definitions>
+
